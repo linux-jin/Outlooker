@@ -158,7 +158,9 @@ let updateRSS = function () {
     localStorage.RSSList = JSON.stringify([
       { name: "IT之家", rss: 'https://www.ithome.com/rss/', icon: "https://www.ithome.com/img/t.png", deleteable: true },
       { name: "V2EX", rss: "https://www.v2ex.com/index.xml", icon: "https://www.v2ex.com/static/icon-192.png", deleteable: true },
-      { name: "GCORES", rss: "https://rss.mifaw.com/articles/5c8bb11a3c41f61efd36683e/5e305f9817d09d44934437c3", disabled: true },
+      { name: "T66Y", rss: "https://rss-tau.vercel.app/t66y/25/16", disabled: true },
+      { name: "Hostloc-收藏", rss: "https://node2.feed43.com/hostloc-fav.xml", disabled: true },
+
     ])
   }
   let RSSList = JSON.parse(localStorage.RSSList)
