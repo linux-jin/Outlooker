@@ -28,8 +28,9 @@ let proxy = function (targetUrl, origin) {
 async function handleRequest(request) {
     let whiteList = [
         "http://localhost:9000",
-        "http://reader.brokendreams.cloud",
-        "https://reader.brokendreams.cloud",
+        "https://fishrss.pages.dev",
+        "http://fishrss.pages.dev",
+        "https://proxyall.666986.xyz"
     ]
     let referer = request.headers.get('referer') || ""
     let origin = request.headers.get('origin') || ""
