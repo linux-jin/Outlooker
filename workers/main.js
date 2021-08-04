@@ -29,8 +29,7 @@ async function handleRequest(request) {
     let whiteList = [
         "http://localhost:9000",
         "https://fishrss.pages.dev",
-        "http://fishrss.pages.dev",
-        "https://proxyall.666986.xyz"
+        "http://fishrss.pages.dev"
     ]
     let referer = request.headers.get('referer') || ""
     let origin = request.headers.get('origin') || ""
