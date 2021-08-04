@@ -44,7 +44,7 @@ let hTmL = (htmlInput = "", item) => {
             let needProxy = false
             try {
               let url = new URL(node.src)
-             
+
               if (url.protocol == "http:") {
                 needProxy = true
               }
@@ -156,8 +156,8 @@ let updateRSS = function () {
   message.info(`Outlooker 已使用 ${getDataDiskSize()}KB 的空间`);
   if (typeof (localStorage.RSSList) != "string") {
     localStorage.RSSList = JSON.stringify([
-      { name: "IT之家", rss: 'https://www.ithome.com/rss/', icon: "https://www.ithome.com/img/t.png", deleteable: false },
-      { name: "V2EX", rss: "https://www.v2ex.com/index.xml", icon: "https://www.v2ex.com/static/icon-192.png", deleteable: false },
+      { name: "IT之家", rss: 'https://www.ithome.com/rss/', icon: "https://www.ithome.com/img/t.png", deleteable: true },
+      { name: "V2EX", rss: "https://www.v2ex.com/index.xml", icon: "https://www.v2ex.com/static/icon-192.png", deleteable: true },
       { name: "GCORES", rss: "https://rss.mifaw.com/articles/5c8bb11a3c41f61efd36683e/5e305f9817d09d44934437c3", disabled: true },
     ])
   }
