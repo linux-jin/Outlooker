@@ -51,12 +51,18 @@ class List extends PureComponent {
                     );
                   }
                 })()}
-                <li
+                <a
                   className={`outlooker-article-list-content ${unread ? 'outlooker-article-list-content-unread' : ''} ${selected ? 'outlooker-article-list-content-selected' : ''}`}
+                //  onTouch
+                //   onTouchEnd={()=>{
+                //     let contentPseudoHash = btoa(encodeURI(item.link));
+                //     history.push("/mail/0/inbox/id/" + contentPseudoHash)
+                //   }}
                   onClick={(event) => {
                     let contentPseudoHash = btoa(encodeURI(item.link));
                     history.push("/mail/0/inbox/id/" + contentPseudoHash)
                   }}
+                  // style={{cursor:'pointer'}}
                 >
                   <div className={'outlooker-article-list-layout-left'}>
                     <div
@@ -69,7 +75,14 @@ class List extends PureComponent {
                         ></div>
                       </div>
                       <div className={'outlooker-article-list-source'}>
-                        {item.author || item.dataSource}
+                        {function(){
+                          if(item.author === "WildXBird"){
+                            return "Outlooker更新"
+                          }else{
+                            return item.author || item.dataSource
+                          }
+                        }()}
+                        
                       </div>
                       <div className={'outlooker-article-list-action'}>
                         <LightButton style={{ color: 'var(--neutralSecondary)' }}>{''}</LightButton>
@@ -111,7 +124,7 @@ class List extends PureComponent {
                       </div>
                     </div>
                   </div>
-                </li>
+                </a>
               </div>
             );
           })}
