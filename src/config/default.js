@@ -1,5 +1,5 @@
 
 export default {
-    Setting_Proxy: "https://proxy.666986.xyz/",
+    Setting_Proxy: "https://proxy.sob.im/",
     emailAddress: "example@live.com",
 };
