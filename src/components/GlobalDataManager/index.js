@@ -10,6 +10,7 @@ let Parser = require('rss-parser');
 let hTmL = (htmlInput = "", item) => {
   let domparser = new DOMParser();
   let artDoc = domparser.parseFromString(htmlInput, "text/html");
+  let DOMReplace = [];
   let DOMRemove = [];
   let treeWalker = document.createTreeWalker(artDoc);
   while (treeWalker.nextNode()) {
@@ -41,10 +42,14 @@ let hTmL = (htmlInput = "", item) => {
             } catch (error) { }
 
 
+            node.removeAttribute("height")
+            node.removeAttribute("width")
+
+
+            const nodeSrc = node.src || ""
             let needProxy = false
             try {
               let url = new URL(node.src)
-
               if (url.protocol == "http:") {
                 needProxy = true
               }
@@ -65,8 +70,27 @@ let hTmL = (htmlInput = "", item) => {
             } else {
               node.referrerPolicy = "no-referrer"
             }
-            node.removeAttribute("height")
-            node.removeAttribute("width")
+            console.log("nodeSrc", nodeSrc)
+            // if (nodeSrc.indexOf("52bbeca3" !== 0)) {
+            //   debugger
+            // }
+            ///判断是否需要隐藏图片
+            if (localStorage.defaultHidePicture === "true") {
+              const element = document.createElement("a")
+              element.href = nodeSrc
+              element.target = "_blank"
+              element.innerHTML = "[图片]"
+              element.rel = "noreferrer nofollow"
+              DOMReplace.push([node, element])
+              // console.log(" node.outerHTML", node.outerHTML)
+              // console.log(" node", node)
+              // node.outerHTML = element.outerHTML
+              // console.log(" node.outerHTML", node.outerHTML)
+              // console.log(" node", node)
+              // break;
+            }
+
+
           }
           break;
         case "A":
@@ -100,6 +124,12 @@ let hTmL = (htmlInput = "", item) => {
     }
 
   }
+  DOMReplace.forEach(function (node) {
+    const before = node.shift()
+    const after = node.shift()
+    before.parentNode.insertBefore(after, before)
+    before.parentNode.removeChild(before);
+  });
   DOMRemove.forEach(function (node) {
     node.parentNode.removeChild(node);
   });
@@ -147,6 +177,7 @@ let getDataDiskSize = function () {
   let size = 0;
   for (let item in localStorage) {
     if (window.localStorage.hasOwnProperty(item)) {
+      size += item.length;
       size += window.localStorage.getItem(item).length;
     }
   }
@@ -158,7 +189,7 @@ let updateRSS = function () {
     localStorage.RSSList = JSON.stringify([
       // { name: "Outlooker更新日志", rss: 'https://github.com/WildXBird/Outlooker/releases.atom', icon: "https://github.githubassets.com/pinned-octocat.svg", deleteable: false },
       { name: "IT之家", rss: 'https://www.ithome.com/rss/', icon: "https://www.ithome.com/img/t.png", deleteable: false },
-      { name: "V2EX", rss: "https://www.v2ex.com/index.xml", icon: "https://www.v2ex.com/static/icon-192.png", deleteable: false },
+      { name: "V2EX", rss: "https://www.v2ex.com/index.xml", icon: "https://www.v2ex.com/static/icon-192.png", deleteable: false,disabled: true },
       { name: "GCORES", rss: "https://rss.mifaw.com/articles/5c8bb11a3c41f61efd36683e/5e305f9817d09d44934437c3", disabled: true },
     ])
   }
@@ -201,10 +232,22 @@ let updateRSS = function () {
         let articleList = [];
         let parser = new Parser();
         let rssLink = Subscription.rss
+        let rawRssLink = rssLink
         if (typeof (localStorage.Setting_Proxy) === "string" && localStorage.Setting_Proxy.length > 1) {
           rssLink = localStorage.Setting_Proxy + rssLink
         }
-        parser.parseURL(rssLink).then((rss) => {
+        parser.parseURL(rssLink).catch((error) => {
+          console.error("err1:", typeof (item), error)
+          if (typeof (item) === "object") {
+            message.error("无法下载：" + (item.name || item.rss || "错误源"));
+          } else {
+            message.error("无法下载: " + rawRssLink);
+          }
+          return "REJECT"
+        }).then((rss) => {
+          if (rss === "REJECT") {
+            return
+          }
           for (let item of rss.items) {
             item.published = new Date(item.pubDate).valueOf()
             item.html = (item.content || item.description)
@@ -229,7 +272,7 @@ let updateRSS = function () {
           progress += eachProgessCent
           Nprogress.set(progress)
         }).catch((error) => {
-          console.error(error)
+          console.error("err2:", typeof (error), error)
           if (typeof (item) === "object") {
             message.error("无法下载：" + (item.name || item.rss || "错误源"));
           } else {

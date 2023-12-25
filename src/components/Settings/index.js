@@ -68,25 +68,52 @@ class Settings extends PureComponent {
         }} />
         <br />
         <br />
+        <Title level={5}>{"列表中使用随机发信人"}</Title>
+        <Checkbox checked={localStorage.randomSenderInList === "true"} onChange={(event) => {
+          let value = event.target.checked
+          localStorage.randomSenderInList = value
+          this.forceUpdate()
+        }}>{"覆盖原始发信人"}</Checkbox>
+        <br />
+        <br />
+        <Title level={5}>{"默认不显示文章中的图片"}</Title>
+        <Checkbox checked={localStorage.defaultHidePicture === "true"} onChange={(event) => {
+          let value = event.target.checked
+          localStorage.defaultHidePicture = value
+          this.forceUpdate()
+        }}>{"默认以链接形式呈现"}</Checkbox>
+        <br />
+        <br />
         <Title level={5}>{"广告区域"}</Title>
         <Checkbox checked={localStorage.disableAD === "true"} onChange={(event) => {
           let value = event.target.checked
-          console.log("disableAD", value)
           localStorage.disableAD = value
+          if(value && localStorage.disableFeedAD === "true"){
+            localStorage.disableFeedAD = "false"
+          }
           this.forceUpdate()
-        }}>{"隐藏"}</Checkbox>
+        }}>{"关闭右侧广告区域"}</Checkbox>
+        <Checkbox checked={localStorage.disableFeedAD === "true"} onChange={(event) => {
+          let value = event.target.checked
+          localStorage.disableFeedAD = value
+          if(value && localStorage.disableAD === "true"){
+            localStorage.disableAD = "false"
+          }
+          this.forceUpdate()
+        }}>{"关闭信息流广告"}</Checkbox>
+        
         <br />
         <br />
         <Title level={5}>{"图片中转服务器"}</Title>
         <Checkbox checked={localStorage.forceImgProxy === "true"} onChange={(event) => {
           let value = event.target.checked
-          console.log("checked", value)
           localStorage.forceImgProxy = value
           this.forceUpdate()
         }}>{"强制中转"}</Checkbox>
         <p>{"仅在图片不能正常显示时启用"}</p>
         <br />
-       
+        <br />
+
 
         <Button type="primary" onClick={() => { this.setState({ openRssList: true }) }}>{"管理订阅"}</Button>
         <br />
