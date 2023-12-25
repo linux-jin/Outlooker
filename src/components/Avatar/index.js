@@ -20,7 +20,7 @@ let Avatar = function Avatar(props) {
   if (props.src) {
     src = props.src;
     if (typeof (localStorage.Setting_Proxy) === "string" && localStorage.Setting_Proxy.length > 1) {
-      src = localStorage.Setting_Proxy + props.src.replace('://','/')
+      src = localStorage.Setting_Proxy + props.src)
     }
     backgroundColor = 'rgb(255 255 255)';
   }
