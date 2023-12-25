@@ -234,7 +234,7 @@ let updateRSS = function () {
         let rssLink = Subscription.rss
         let rawRssLink = rssLink
         if (typeof (localStorage.Setting_Proxy) === "string" && localStorage.Setting_Proxy.length > 1) {
-          rssLink = localStorage.Setting_Proxy + rssLink
+          rssLink = localStorage.Setting_Proxy + rssLink.replace('https://','')
         }
         parser.parseURL(rssLink).catch((error) => {
           console.error("err1:", typeof (item), error)

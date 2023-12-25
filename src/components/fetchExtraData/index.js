@@ -8,7 +8,7 @@ let fetchExtraData = function (url) {
         let Fetch = (targetUrl, HTML = false) => {
             return new Promise((resolve, reject) => {
                 if (typeof (localStorage.Setting_Proxy) === "string" && localStorage.Setting_Proxy.length > 1) {
-                    targetUrl = localStorage.Setting_Proxy + targetUrl
+                    targetUrl = localStorage.Setting_Proxy + targetUrl.replace('https://','')
                 }
                 fetch(targetUrl).then((data) => {
                     if (HTML) {
