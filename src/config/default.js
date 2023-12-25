@@ -1,5 +1,5 @@
 
 export default {
-    Setting_Proxy: "https://rssproxy.trojan.workers.dev/",
+    Setting_Proxy: "https://proxy.666986.xyz/",
     emailAddress: "example@live.com",
 };
